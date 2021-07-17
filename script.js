@@ -11,10 +11,10 @@ function convertTOSVG(){
   var circumference = (Math.PI * mean_sea_level) / 2;
   //console.log(countries);
   //Set the SVG heigh, width and viewbox
-  //360 degrees wide
+  /*//360 degrees wide
   document.getElementById("world_map").style.width = `${circumference}px`;
   //180 degrees heigh
-  document.getElementById("world_map").style.height = `${circumference / 2}px`;
+  document.getElementById("world_map").style.height = `${circumference / 2}px`;*/
   //Set the viewbox to contain the entire map
   document.getElementById("world_map").setAttribute("viewBox",`${-circumference/2} ${-circumference / 4} ${circumference} ${circumference / 2}`);
   countries.forEach(country => {
@@ -39,9 +39,21 @@ function convertTOSVG(){
           points += latitude + "," + longitude + " ";
         });
       });
-      //Add the polygon to the svg
-      fullSVG += `<polygon points="${points}" style="fill: #659B5E"/>`;
+      //Add the polygon to the svg and events to change color
+      fullSVG += `<polygon points="${points}" style="fill: #659B5E" onmouseover="onCountryHover(this)" onmouseout="onLeaveCountry(this)" data-country="${country_name}"/>"`;
     });
   });
   document.getElementById("world_map").innerHTML = fullSVG;
+}
+
+//Triggered when the countries get hovered
+function onCountryHover(element){
+  document.getElementById("country_name").style.display = "block";
+  element.style.fill = "#42423D";
+  document.getElementById("country_name").innerHTML = element.dataset.country;
+}
+
+function onLeaveCountry(element){
+  document.getElementById("country_name").style.display = "none";
+  element.style.fill = "#659B5E";
 }
